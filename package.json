@@ -6,7 +6,8 @@
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
     "react-stripe-checkout": "^1.7.2",
-    "react-tap-event-plugin": "^0.2.1"
+    "react-tap-event-plugin": "^0.2.1",
+    "webpack-dev-server": "^1.14.1"
   },
   "devDependencies": {
     "jsx-loader": "^0.13.2",
