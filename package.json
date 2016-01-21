@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "fluxxor": "^1.7.3",
+    "material-ui": "^0.14.2",
+    "qwest": "^3.0.0",
+    "react": "^0.14.6",
+    "react-dom": "^0.14.6",
+    "react-stripe-checkout": "^1.7.2",
+    "react-tap-event-plugin": "^0.2.1"
+  },
+  "devDependencies": {
+    "jsx-loader": "^0.13.2",
+    "style-loader": "^0.13.0"
+  }
+}
