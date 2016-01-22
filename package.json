@@ -7,9 +7,15 @@
     "react-dom": "^0.14.6",
     "react-stripe-checkout": "^1.7.2",
     "react-tap-event-plugin": "^0.2.1",
-    "webpack-dev-server": "^1.14.1",
+    "express": "^4.13.4"
+  }, 
+  "devDependencies": {
     "webpack": "^1.12.11",
     "jsx-loader": "^0.13.2",
     "style-loader": "^0.13.0"
+  },
+  "scripts": {
+      "build": "webpack",
+      "start": "node server.js"
   }
 }
