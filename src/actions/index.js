@@ -2,7 +2,7 @@ var promise = require('promise');
 var constants = require('../constants.js');
 var qwest = require('qwest');
 
-var api = "http://thawing-bayou-8432.herokuapp.com/";
+var api = "https://thawing-bayou-8432.herokuapp.com/";
 
 function pickName()
 {
