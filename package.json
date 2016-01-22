@@ -15,7 +15,7 @@
     "style-loader": "^0.13.0"
   },
   "scripts": {
-      "build": "webpack",
+      "postinstall": "webpack",
       "start": "node server.js"
   }
 }
