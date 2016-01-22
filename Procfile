@@ -1,1 +1,1 @@
-web: node node_modules/webpack-dev-server/bin/webpack-dev-server.js --port=$PORT
+web: echo $PORT && node node_modules/webpack-dev-server/bin/webpack-dev-server.js --port=$PORT
