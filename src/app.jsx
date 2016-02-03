@@ -1,30 +1,86 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-var ServerPage = require('./pages/ServerPage.jsx');
+// var ServerPage = require('./pages/ServerPage.jsx');
 var Fluxxor = require('fluxxor');
+var ReactRouter = require('react-router'),
+    Route = ReactRouter.Route,
+    Router = ReactRouter.Router,
+    browserHistory = ReactRouter.browserHistory;
+
+var App = require('./pages/App.jsx'),
+    About = require('./pages/About.jsx'),
+    PaymentMethods = require('./pages/PaymentMethods.jsx'),
+    PaymentMethod = require('./pages/PaymentMethod.jsx'),
+    Servers = require('./pages/Servers.jsx'),
+    Server = require('./pages/Server.jsx'),
+    Profile = require('./pages/Profile.jsx'),
+    NoMatch = require('./pages/NoMatch.jsx');
+
 
 require('react-tap-event-plugin')();
-var ServerStore = require('./stores/ServerStore.js'),
-    SubscriptionStore = require('./stores/SubscriptionStore.js'),
-    TaskStore = require('./stores/TaskStore.js');
+var PaymentMethodStore = require('./stores/PaymentMethodStore.js'),
+    ProfileStore = require('./stores/ProfileStore.js');
+//     PaymentMethodStore = require('./stores/PaymentMethodStore.js'),
+//     TaskStore = require('./stores/TaskStore.js');
 
 var stores = window.stores = {
-  ServerStore: new ServerStore(),
-  TaskStore: new TaskStore(),
-  SubscriptionStore: new SubscriptionStore()
+  PaymentMethodStore: new PaymentMethodStore(),
+  ProfileStore: new ProfileStore()
+//   TaskStore: new TaskStore(),
+//  PaymentMethodStore: new PaymentMethodStore()
 };
 var actions = require('./actions');
 
 
 var flux = new Fluxxor.Flux(stores, actions);
 
-// flux.on("dispatch", function(type, payload) {
-//   if (console && console.log) {
-//     console.log("[Dispatch]", type, payload);
-//   }
-// });
+
+var wrapper = function(Component, context) {
+  return React.createClass({
+    propTypes: {
+    },
+
+    childContextTypes: {
+      flux: React.PropTypes.object,
+    },
+
+    getChildContext: function() {
+        console.log("getting child context");
+      return {
+        flux: context
+      };
+    },
+
+    componentDidMount: function(){
+
+    },
+
+    render: function() {
+        
+        console.log("wrapper rendering child component");
+      return (
+        <Component {...this.props}/>
+      );
+    }
+  });
+};
+
+var routes =(
+  <Router history={browserHistory} flux={flux}>
+    <Route path="/" component={wrapper(App, flux)}>
+      <Route path="about" component={About}/>
+      <Route path="paymentmethods" component={PaymentMethods}>
+        <Route path="/paymentmethod/:userId" component={PaymentMethod}/>
+      </Route>
+      <Route path="servers" component={Servers}>
+        <Route path="/server/:userId" component={Server}/>
+      </Route>
+      <Route path="profile" component={Profile}/>
+      <Route path="*" component={NoMatch}/>
+    </Route>
+  </Router>);
 
 ReactDOM.render(
-  <ServerPage flux={flux} />,
-  document.getElementById('content')
+    routes,
+    document.getElementById("content")
 );
