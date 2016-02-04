@@ -11,16 +11,14 @@
     "react-dom": "^0.14.6",
     "react-router": "^1.0.3",
     "react-stripe-checkout": "^1.7.2",
-    "react-tap-event-plugin": "^0.2.1"
-  },
-  "devDependencies": {
+    "react-tap-event-plugin": "^0.2.1",
     "json-loader": "^0.5.4",
     "jsx-loader": "^0.13.2",
     "style-loader": "^0.13.0",
     "webpack": "^1.12.11"
   },
   "scripts": {
-    "postinstall": "ls node_modules/ && ls node_modules/webpack/* && ls node_modules/webpack/bin/* && node node_modules/webpack/bin/webpack.js -p",
+    "postinstall": "node node_modules/webpack/bin/webpack.js -p",
     "start": "node server.js"
   }
 }
