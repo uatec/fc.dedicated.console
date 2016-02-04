@@ -14,7 +14,8 @@ var ProfileStore = Fluxxor.createStore({
 	},
     
     _profileChanged: function(payload) {
-        this.profile = payload;
+        this.profile = payload.profile;
+        this.token = payload.token;
         this.emit('change');
     },
     

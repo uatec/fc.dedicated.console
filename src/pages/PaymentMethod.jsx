@@ -19,6 +19,6 @@ module.exports = PaymentMethod = React.createClass({
     
     render: function() {
 
-       return <div>PaymentMethod</div>;
+       return <div>{this.props.paymentMethod.object} ending in {this.props.paymentMethod.last4}</div>;
     }    
 });

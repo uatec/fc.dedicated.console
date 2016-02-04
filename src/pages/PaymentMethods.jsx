@@ -3,7 +3,7 @@ var React = require('react'),
     
 var strings = require('../constants.js').strings;
 
-var Server = require('./Server.jsx');
+var PaymentMethod = require('./PaymentMethod.jsx');
 
 var StripeCheckout = require('react-stripe-checkout');
 
@@ -28,23 +28,28 @@ module.exports = PaymentMethods = React.createClass({
     },
     
     _paymentDetailsReady: function(paymentSetupDetails) {
-        this.getFlux().actions.savePaymentMethod(paymentSetupDetails.card.id); 
+        this.getFlux().actions.savePaymentMethod(paymentSetupDetails.id); 
     },
 
     render: function() {
         var paymentMethods = this.getFlux().store("PaymentMethodStore").getPaymentMethods();
-        var renderedPaymentMethods = paymentMethods ? paymentMethods.forEach(function(m) {
-                    return <Server paymentMethods={m} />
+        var renderedPaymentMethods = paymentMethods ? paymentMethods.map(function(m) {
+                    return <PaymentMethod paymentMethod={m} />
                 }) : "You haven't set up any paymentMethods yet.";
+
+        var userEmail = this.getFlux().store('ProfileStore').getProfile().email;
         return <div>
             <div>PaymentMethods</div>
                 {renderedPaymentMethods}
+            <div>
                 <StripeCheckout
+                    email={userEmail}
                     onScriptError={this._onStripeScriptError}
                     name={strings.companyName}
                     description={strings.companyTagline}
                     token={this._paymentDetailsReady}
                     stripeKey={strings.stripeKey} />
+            </div>
         </div>;
     }    
 });

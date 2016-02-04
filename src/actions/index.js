@@ -23,14 +23,17 @@ function pickName()
 }
 
 
-function getAuthorizationHeader()
-{
-    return "Bearer " + localStorage.getItem('userToken');
-}
+
 
 var lock = new Auth0Lock('MUHjlTR40ID6unXkP2UAy5vKLZlQd3Jd', 'uatec.eu.auth0.com');
         
 module.exports = {
+    
+    
+    _getAuthorizationHeader: function()
+    {
+        return "Bearer " + this.flux.store('ProfileStore').getToken();
+    },
     
     initiateLogin: function() {
         lock.show();
@@ -54,9 +57,24 @@ module.exports = {
         lock.getProfile(jwt, function (err, profile) {
                 if (err) {
                     console.log("Error loading the Profile", err);
+                    // log some kind of error state maybe?
+                    // maybe an action to reflect it to the UI AND post it back to a logging platform?
                     return;
                 }
-                this.dispatch(events.SIGNED_IN, profile);
+                
+                // now we've validated, we know it's worth while getting or creating this user
+                qwest.get(api + 'user', null, {
+                    "headers": {"Authorization": "Bearer " + jwt}
+                })
+                .then(function(xhr, response) {
+                    // we don't really have anything to do with the user details at this moment
+                    // we just want to make sure that the user exists for requests further down the line
+                    this.dispatch(events.SIGNED_IN, {
+                        "token": jwt,
+                        "profile": profile
+                    });    
+                }.bind(this))
+                .catch(console.log);                
             }.bind(this));
     },
     
@@ -65,9 +83,9 @@ module.exports = {
             token: token
         };
         
-        qwest.post(api + 'secured/savepaymentmethod', payload, {
+        qwest.post(api + 'savepaymentmethod', payload, {
             dataType: 'json',
-            "headers": {"Authorization": getAuthorizationHeader()}
+            "headers": {"Authorization": this.flux.actions._getAuthorizationHeader()}
         }).then(function() { 
             this.flux.actions.fetchPaymentMethods();
         }.bind(this)); 
@@ -75,7 +93,7 @@ module.exports = {
     
     fetchServers: function() {
         qwest.get(api + 'servers', null, {
-            "headers": {"Authorization": getAuthorizationHeader()}
+            "headers": {"Authorization": this.flux.actions._getAuthorizationHeader()}
             })
         .then(function(xhr, response) {
             var data = JSON.parse(response);
@@ -87,19 +105,17 @@ module.exports = {
     
     fetchPaymentMethods: function() {
         qwest.get(api + 'paymentmethods', null, {
-            "headers": {"Authorization": getAuthorizationHeader()}
+            "headers": {"Authorization": this.flux.actions._getAuthorizationHeader()}
             })
         .then(function(xhr, response) {
-            var data = JSON.parse(response);
-            var paymentmethods = '_embedded' in data ? 'paymentmethods' in data._embedded ? data._embedded.paymentmethods : [] : [];
-            this.dispatch(events.PAYMENTMETHODS_CHANGED, paymentmethods);
+            this.dispatch(events.PAYMENTMETHODS_CHANGED, response);
         }.bind(this))
         .catch(console.log);  
     },    
     
     fetchTasks: function() {
         qwest.get(api + 'tasks', null, {
-            "headers": {"Authorization": getAuthorizationHeader()}
+            "headers": {"Authorization": this.flux.actions._getAuthorizationHeader()}
             })
         .then(function(xhr, response) {
             var data = JSON.parse(response);
@@ -118,7 +134,7 @@ module.exports = {
 
         qwest.post(api + 'tasks', payload, {
                 dataType: 'json',
-            "headers": {"Authorization": getAuthorizationHeader()}
+            "headers": {"Authorization": this.flux.actions._getAuthorizationHeader()}
             })
         .then(function(xhr, response) {
             this.flux.actions.fetchTasks();
@@ -130,7 +146,7 @@ module.exports = {
     
     deleteServer: function(server) {
         qwest.delete(server._links.self.href, null, {
-            "headers": {"Authorization": getAuthorizationHeader()}
+            "headers": {"Authorization": this.flux.actions._getAuthorizationHeader()}
         })
         .then(function(xhr, response) {
             this.flux.actions.fetchTasks();
