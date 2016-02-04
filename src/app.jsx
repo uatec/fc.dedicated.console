@@ -45,7 +45,6 @@ var wrapper = function(Component, context) {
     },
 
     getChildContext: function() {
-        console.log("getting child context");
       return {
         flux: context
       };
@@ -56,8 +55,6 @@ var wrapper = function(Component, context) {
     },
 
     render: function() {
-        
-        console.log("wrapper rendering child component");
       return (
         <Component {...this.props}/>
       );
@@ -66,14 +63,14 @@ var wrapper = function(Component, context) {
 };
 
 var routes =(
-  <Router history={browserHistory} flux={flux}>
+  <Router history={browserHistory}>
     <Route path="/" component={wrapper(App, flux)}>
       <Route path="about" component={About}/>
       <Route path="paymentmethods" component={PaymentMethods}>
         <Route path="/paymentmethod/:userId" component={PaymentMethod}/>
       </Route>
       <Route path="servers" component={Servers}>
-        <Route path="/server/:userId" component={Server}/>
+        <Route path="/server/:serverid" component={Server}/>
       </Route>
       <Route path="profile" component={Profile}/>
       <Route path="*" component={NoMatch}/>
