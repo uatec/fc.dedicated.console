@@ -18,7 +18,7 @@
     "webpack": "^1.12.11"
   },
   "scripts": {
-    "postinstall": "node node_modules/webpack/bin/webpack.js -p",
+    "postinstall": "node node_modules/webpack/bin/webpack.js -d",
     "start": "node server.js"
   }
 }
