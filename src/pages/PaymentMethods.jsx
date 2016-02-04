@@ -18,7 +18,6 @@ module.exports = PaymentMethods = React.createClass({
     mixins: [FluxMixin, StoreWatchMixin("PaymentMethodStore")],
 
     getStateFromFlux: function() {
-        this.getFlux().actions.fetchPaymentMethods();
         return {};
     },
     
@@ -33,6 +32,11 @@ module.exports = PaymentMethods = React.createClass({
 
     render: function() {
         var paymentMethods = this.getFlux().store("PaymentMethodStore").getPaymentMethods();
+        if ( paymentMethods == null )  {           
+            this.getFlux().actions.fetchPaymentMethods();
+            return <div>Just finding how you like to pay.</div>;
+        }
+        
         var renderedPaymentMethods = paymentMethods ? paymentMethods.map(function(m) {
                     return <PaymentMethod paymentMethod={m} />
                 }) : "You haven't set up any paymentMethods yet.";
