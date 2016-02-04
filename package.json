@@ -18,7 +18,7 @@
     "webpack": "^1.12.11"
   },
   "scripts": {
-    "postinstall": "node node_modules/webpack/bin/webpack.js -d",
+    "postinstall": "node node_modules/webpack/bin/webpack.js --debug --devtool inline-source-map ",
     "start": "node server.js"
   }
 }
