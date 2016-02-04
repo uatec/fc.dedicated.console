@@ -3,7 +3,8 @@ var events = require('../constants.js').events;
 var qwest = require('qwest');
 
 var Auth0Lock = require('auth0-lock');
-var api = "http://localhost:8080/api/";
+var api = "https://thawing-bayou-8432.herokuapp.com/api/";
+// var api = "http://localhost:8080/api/";
 
 function pickName()
 {
