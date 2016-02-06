@@ -1,6 +1,6 @@
 var Fluxxor = require('fluxxor');
 
-var constants = require('../constants.js');
+var events = require('../constants.js').events;
 // var actions = require('../actions/actions.js');
 
 var ServerStore = Fluxxor.createStore({
@@ -8,7 +8,7 @@ var ServerStore = Fluxxor.createStore({
 	{ 
         this.servers = null;
         this.bindActions(
-            constants.SERVERS_CHANGED, this._serversChanged
+            events.SERVERS_CHANGED, this._serversChanged
         );
 	},
     

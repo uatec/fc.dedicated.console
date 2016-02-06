@@ -37,8 +37,8 @@ module.exports = PaymentMethods = React.createClass({
             return <div>Just finding how you like to pay.</div>;
         }
         
-        var renderedPaymentMethods = paymentMethods ? paymentMethods.map(function(m) {
-                    return <PaymentMethod paymentMethod={m} />
+        var renderedPaymentMethods = paymentMethods ? paymentMethods.map(function(m, idx) {
+                    return <PaymentMethod paymentMethod={m} key={idx} />;
                 }) : "You haven't set up any paymentMethods yet.";
 
         var userEmail = this.getFlux().store('ProfileStore').getProfile().email;

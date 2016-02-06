@@ -19,13 +19,15 @@ var App = require('./pages/App.jsx'),
 
 require('react-tap-event-plugin')();
 var PaymentMethodStore = require('./stores/PaymentMethodStore.js'),
-    ProfileStore = require('./stores/ProfileStore.js');
+    ProfileStore = require('./stores/ProfileStore.js'),
+    ServerStore = require('./stores/ServerStore.js');
 //     PaymentMethodStore = require('./stores/PaymentMethodStore.js'),
 //     TaskStore = require('./stores/TaskStore.js');
 
 var stores = window.stores = {
   PaymentMethodStore: new PaymentMethodStore(),
-  ProfileStore: new ProfileStore()
+  ProfileStore: new ProfileStore(),
+  ServerStore: new ServerStore()
 //   TaskStore: new TaskStore(),
 //  PaymentMethodStore: new PaymentMethodStore()
 };

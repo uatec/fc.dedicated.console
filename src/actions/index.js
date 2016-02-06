@@ -3,8 +3,8 @@ var events = require('../constants.js').events;
 var qwest = require('qwest');
 
 var Auth0Lock = require('auth0-lock');
-var api = "https://thawing-bayou-8432.herokuapp.com/api/";
-// var api = "http://localhost:8080/api/";
+// var api = "https://thawing-bayou-8432.herokuapp.com/api/";
+var api = "http://localhost:8080/api/";
 
 function pickName()
 {
@@ -22,9 +22,6 @@ function pickName()
 
     return names[Math.floor(Math.random() * names.length)];
 }
-
-
-
 
 var lock = new Auth0Lock('MUHjlTR40ID6unXkP2UAy5vKLZlQd3Jd', 'uatec.eu.auth0.com');
         
@@ -93,13 +90,11 @@ module.exports = {
     },
     
     fetchServers: function() {
-        qwest.get(api + 'servers', null, {
+        qwest.get(api + 'getservers', null, {
             "headers": {"Authorization": this.flux.actions._getAuthorizationHeader()}
             })
         .then(function(xhr, response) {
-            var data = JSON.parse(response);
-            var servers = '_embedded' in data ? 'servers' in data._embedded ? data._embedded.servers : [] : [];
-            this.dispatch(events.SERVERS_CHANGED, servers);
+            this.dispatch(events.SERVERS_CHANGED, response);
         }.bind(this))
         .catch(console.log);  
     },    
@@ -126,21 +121,18 @@ module.exports = {
         .catch(console.log);  
     },
     
-    createNewServer: function() {
+    createServer: function(serverName, instanceType){
         var payload = {
-                serverId: pickName(),
-                action: 'Create',
-                userEmail: 'uatecuk@gmail.com'
+                friendlyName: serverName,
+                instanceType: instanceType
             };
 
-        qwest.post(api + 'tasks', payload, {
+        qwest.post(api + 'createserver', payload, {
                 dataType: 'json',
             "headers": {"Authorization": this.flux.actions._getAuthorizationHeader()}
             })
         .then(function(xhr, response) {
-            this.flux.actions.fetchTasks();
             this.flux.actions.fetchServers();
-            this.flux.actions.fetchSubscriptions();
         }.bind(this))
         .catch(console.log);  
     },
