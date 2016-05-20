@@ -23,7 +23,8 @@ function pickName()
     return names[Math.floor(Math.random() * names.length)];
 }
 
-var lock = new Auth0Lock('MUHjlTR40ID6unXkP2UAy5vKLZlQd3Jd', 'uatec.eu.auth0.com');
+var lock = new Auth0Lock(process.env.auth0clientId || 'MUHjlTR40ID6unXkP2UAy5vKLZlQd3Jd',
+    process.env.auth0domain || 'uatec.eu.auth0.com');
         
 module.exports = {
     
