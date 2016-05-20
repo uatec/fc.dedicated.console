@@ -13,16 +13,17 @@ var FluxMixin = Fluxxor.FluxMixin(React),
 
 
 module.exports = Server = React.createClass({
-    // mixins: [FluxMixin],
+    mixins: [FluxMixin],
 
-    // getStateFromFlux: function() {
-        
-    //     return {};
-    // },
+    getStateFromFlux: function() {
+        return {};
+    },
+
+    terminate: function() {
+        this.getFlux().actions.terminateServer(this.props.server.server);
+    },
     
     render: function() {
-        console.log('rendering server: ', this.props);
-        
         var dnsName = this.props.server.server ? this.props.server.server.dnsName : 'not ready';
         
         return <span>
@@ -30,9 +31,10 @@ module.exports = Server = React.createClass({
                 <CardTitle title={this.props.server.config.friendlyName}
                     subtitle={dnsName} />
                    <CardActions>
+                    <RaisedButton label="Terminate" onClick={this.terminate} />
                    </CardActions>
             </Card>
-            <br />
-            </span>;
+        <br />
+        </span>;
     }    
 });

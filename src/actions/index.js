@@ -3,8 +3,8 @@ var events = require('../constants.js').events;
 var qwest = require('qwest');
 
 var Auth0Lock = require('auth0-lock');
-var api = "https://thawing-bayou-8432.herokuapp.com/api/";
-//var api = "http://localhost:8080/api/";
+
+var api = process.env.API_URL || "http://localhost:8080/api/";
 
 function pickName()
 {
@@ -35,6 +35,20 @@ module.exports = {
     
     initiateLogin: function() {
         lock.show();
+    },
+    
+    terminateServer: function(server)
+    {
+        console.log("terminating server: ", server);  
+
+        qwest
+            .post(api + 'terminateserver/' + server.id, null, {
+                headers: {
+                    "headers": {"Authorization": this.flux.actions._getAuthorizationHeader()}
+                }
+            }).then(function() { 
+                this.flux.actions.fetchServers();
+            }.bind(this));
     },
     
     setPrincipalFromHash: function(hash) {
