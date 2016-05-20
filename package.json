@@ -19,7 +19,8 @@
     "webpack": "^1.12.11"
   },
   "scripts": {
-    "postinstall": "node node_modules/webpack/bin/webpack.js --debug --devtool inline-source-map ",
-    "start": "node server.js"
+    "postinstall": "node node_modules/webpack/bin/webpack.js --optimize-minimize",
+    "start": "node server.js",
+    "dev": "node ./node_modules/.bin/webpack debug --devtool inline-source-map && node ./server.js"
   }
 }
