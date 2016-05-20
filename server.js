@@ -6,7 +6,7 @@ var _ = require('lodash');
 
 
 var envVars = '<script>GLOBAL = {}; GLOBAL.env=' + JSON.stringify(_.pick(process.env, [
-    'auth0clientid',
+    'auth0clientId',
     'auth0domain',
     'API_URL'
 ])) + '</script>';
