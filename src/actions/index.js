@@ -4,7 +4,7 @@ var qwest = require('qwest');
 
 var Auth0Lock = require('auth0-lock');
 
-var api = process.env.API_URL || "http://localhost:8080/api/";
+var api = GLOBAL.env.API_URL || "http://localhost:8080/api/";
 
 function pickName()
 {
@@ -23,8 +23,8 @@ function pickName()
     return names[Math.floor(Math.random() * names.length)];
 }
 
-var lock = new Auth0Lock(process.env.auth0clientId || 'MUHjlTR40ID6unXkP2UAy5vKLZlQd3Jd',
-    process.env.auth0domain || 'uatec.eu.auth0.com');
+var lock = new Auth0Lock(GLOBAL.env.auth0clientId || 'MUHjlTR40ID6unXkP2UAy5vKLZlQd3Jd',
+    GLOBAL.env.auth0domain || 'uatec.eu.auth0.com');
         
 module.exports = {
     
