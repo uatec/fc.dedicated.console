@@ -28,4 +28,7 @@ app.get('/', function (request, response) {
 
 app.use(express.static('public'));
 
-app.listen(process.env.PORT || 8081);
+var port = process.env.PORT || 8081;
+app.listen(port, function() {
+    console.log('listening on ', port);
+});
